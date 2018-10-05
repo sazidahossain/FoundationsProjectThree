@@ -13,22 +13,25 @@ def introduction():
 def options():
     # your code goes here!
     userinput = input("Would you like to:\n1) Create a new club.\nor:\n2) Browse and join clubs.\nor:\n3) View existing clubs.\nor:\n4) Display members of a club.\nor:\n-1) Close application.\n")
-    if int(userinput)==1:
-        return "create club"
-    elif int(userinput)==2:
-        return "join clubs"
-    elif int(userinput)==3:
-        view_clubs()
-        print("\n")
-        application()
-    elif int(userinput)==4:
-        return "view members"
-    elif int(userinput)==-1:
-        print("Logged out")
-    else:
+    try:
+        if int(userinput)==1:
+            return "create club"
+        elif int(userinput)==2:
+            return "join clubs"
+        elif int(userinput)==3:
+            view_clubs()
+            print("\n")
+            application()
+        elif int(userinput)==4:
+            return "view members"
+        elif int(userinput)==-1:
+            print("Logged out")
+        else:
+            print("Your input was invalid. Please try again:")
+            application()
+    except ValueError:
         print("Your input was invalid. Please try again:")
         application()
-
 
 def create_club():
     # your code goes here!
@@ -45,16 +48,23 @@ def create_club():
     for i in population:
         print ("["+str(counterx)+"]"+ i.name)
         counterx=counterx+1
-    userinputl=input()
-    while(int(userinputl)!=-1):
-        if int(userinputl) in range(0,len(population)):
-            if int(userinputl)<=counter and population[int(userinputl)-1] not in clubx.people:
-                clubx.recruit_member(population[int(userinputl)-1])
-            elif population[int(userinputl)-1] in clubx.people:
-                print(population[int(userinputl)-1].name+" is already in club")
-        else:
+    userinputl = input()
+
+    while(userinputl!=str(-1)):
+        try:
+            if int(userinputl) in range(0,len(population)):
+                if population[int(userinputl)-1] not in clubx.people:
+                    clubx.recruit_member(population[int(userinputl)-1])
+                elif population[int(userinputl)-1] in clubx.people:
+                    print(population[int(userinputl)-1].name+" is already in club")
+                else:
+                    print("Invalid input! Please try again:")
+            else:
+                print("Invalid input! Please try again")
+        except ValueError:
             print("Invalid input! Please try again")
         userinputl = input()
+
     clubs.append(clubx)
     print("Here's your club:")
     print("Club Name: "+clubx.name)
@@ -107,7 +117,6 @@ def join_clubs():
 def application():
     introduction()
     # your code goes here!
-
     m=options()
     if m=="create club":
         create_club()
